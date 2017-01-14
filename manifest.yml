@@ -1,0 +1,12 @@
+applications:
+- path: .
+  memory: 1024M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: mybankingasst
+  host: mybankingasst
+  disk_quota: 1024M
+  services:
+  - Sample-Banking-App
+  - mybankingasst-cloudantNoSQLDB
+  - availability-monitoring-auto

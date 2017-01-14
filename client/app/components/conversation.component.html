@@ -1,0 +1,53 @@
+<div class="container" style="margin-bottom:100px;" >
+    <div class="col-md-6 col-md-offset-3">
+        <div class="chat-ui scrollbar" id="style-4" *ngIf="conversation">
+            <div *ngFor="let message of conversation;">
+                <div *ngIf="message.class == 'image'" class="cui__user cui__bubble cui__bubble--slideIn cui__bubble--fade " style="float:none;max-width:100%;background:#EFEFEF;">
+                    <a target="_blank" href="{{ message.message }}"><img src="{{ message.sender }}" style="width:100%" />
+                        <p>View on wikipedia</p>
+                    </a>
+                </div>
+                <div *ngIf="message.class == 'form'" class="cui__user cui__bubble cui__bubble--slideIn cui__bubble--fade " style="float:none;max-width:100%;background:#EFEFEF;">
+                    <div class="formContainers">
+                        {{ message.message }}
+                    </div>
+                </div>
+                <div *ngIf="message.class != 'image' && message.class != 'form'" class="cui__bubble cui__bubble--slideIn cui__bubble--fade {{ message.class }}" style="">
+                    <span>{{ message.message }}</span>
+                </div>
+            </div>
+            <div id="formHolders" class="hide" style="background: #EFEFEF;padding:12px;">
+                <div class="formContainers" *ngIf="FormVariables">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container"  style="position:fixed;width:100%;bottom:0px;padding:15px;background:#EFEFEF;">
+    <div class="col-md-4 col-md-offset-4" >
+         <div class="user_response">
+            <div *ngIf="ButtonVariables" class="button-response text-center">
+                <p>{{ ButtonVariables.ButtonText }}</p>
+                <span *ngFor="let button of ButtonVariables.ButtonParams">
+                    <button class="btn btn-primary btn-lg btn-choice" (click)="sendConversationMessage($event, button)"> {{ button }} </button>
+                </span>
+            </div>
+            <div *ngIf="SystemConversation" class="button-response text-center">
+                <p>{{ SystemConversation.Text }}</p>
+                <span *ngFor="let button of SystemConversation.Params">
+                    <button class="btn btn-primary btn-lg btn-choice" (click)="generateSystemConversations($event, SystemConversation.parent, button.action, button.name, button.backToWatson)"> {{ button.name }} </button>
+                </span>
+            </div>
+            <div *ngIf="TextVariables" class="text-response">
+                <input autofocus="true" placeholder="Write Something" class="form-input" type="text" #message (keyup.enter)="sendConversationMessage($event, message.value)" style="padding:5px 20px;border-radius:3px;width:100%;outline:none;border:none;border-bottom:solid 3px #008ABC"/>
+            </div>
+            <div *ngIf="ChangeVariables" class="text-center">
+                <button class="btn btn-primary btn-lg btn-choice" (click)="sendConversationMessage($event, 'I changed my mind, ill like to do something else')">I changed my mind, i'll like to do something else </button>
+            </div>
+        </div>
+    </div>
+</div>
+

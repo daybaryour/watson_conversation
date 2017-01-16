@@ -26,8 +26,8 @@
 </div>
 
 
-<div class="container"  style="position:fixed;width:100%;bottom:0px;padding:15px;background:#EFEFEF;">
-    <div class="col-md-4 col-md-offset-4" >
+<div class="container"  style="position:fixed;width:100%;bottom:0px;padding:15px;background:#EFEFEF;height: 18vh;overflow-x: scroll;">
+    <div class="col-md-8 col-md-offset-2" >
          <div class="user_response">
             <div *ngIf="ButtonVariables" class="button-response text-center">
                 <p>{{ ButtonVariables.ButtonText }}</p>
@@ -41,8 +41,8 @@
                     <button class="btn btn-primary btn-lg btn-choice" (click)="generateSystemConversations($event, SystemConversation.parent, button.action, button.name, button.backToWatson)"> {{ button.name }} </button>
                 </span>
             </div>
-            <div *ngIf="TextVariables" class="text-response">
-                <input autofocus="true" placeholder="Write Something" class="form-input" type="text" #message (keyup.enter)="sendConversationMessage($event, message.value)" style="padding:5px 20px;border-radius:3px;width:100%;outline:none;border:none;border-bottom:solid 3px #008ABC"/>
+            <div *ngIf="TextVariables" class="text-response" style="margin-bottom:5px;">
+                <input autofocus="true" placeholder="Start Typing" class="form-input" type="text" #message (keyup.enter)="sendConversationMessage($event, message.value)" style="padding:5px 20px;border-radius:3px;width:100%;outline:none;border:none;border-bottom:solid 3px #008ABC"/>
             </div>
             <div *ngIf="ChangeVariables" class="text-center">
                 <button class="btn btn-primary btn-lg btn-choice" (click)="sendConversationMessage($event, 'I changed my mind, ill like to do something else')">I changed my mind, i'll like to do something else </button>

@@ -21,6 +21,8 @@ app.use('/', index);
 app.use('/api/v1/', conversation);
 
 
-app.listen(3000 , function() {
-    console.log('Application Started on port 3000');
+var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
+
+app.listen(port , function() {
+    console.log('Application Started on port %d', port);
 })

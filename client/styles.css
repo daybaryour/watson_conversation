@@ -2,7 +2,7 @@ body {
     font-family: 'Lato', sans-serif;
     font-family: 'Roboto', sans-serif;
     font-family: 'Open Sans Condensed', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
 }
 h1 {
   color: #369;
@@ -58,6 +58,10 @@ h1 {
 	
 }
 
+.no-padding {
+    padding:0;
+}
+
 .scrollbar {
 	padding-right: 5px;
 }
@@ -71,7 +75,7 @@ h1 {
 #style-4::-webkit-scrollbar
 {
 	width: 6px;
-	height: 40px;
+	height: 0px;
 	background-color: #F5F5F5;
 }
 
@@ -90,7 +94,11 @@ h1 {
 	display: block;
 }
 
-@media(max-width:767px){}
+@media(max-width:767px){
+    .cui__bubble, .cui__user {
+		transform: translate3d(0px, 0, 0);
+	}
+}
 @media(min-width:768px){
 	.cui__bubble, .cui__user {
 		transform: translate3d(0px, 0, 0);
@@ -134,10 +142,19 @@ h1 {
       color:#D9230F;
   }
 
+  .btn {
+      font-weight: 300;
+      font-size:15px;
+  }
+
   .button-choice {
 	  margin-right:20px;
   }
 
   form .form-group {
 	  margin-bottom:0;
+  }
+
+  .button-response button {
+        margin-bottom:7px;
   }

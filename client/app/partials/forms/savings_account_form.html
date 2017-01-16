@@ -14,7 +14,7 @@
         </div>
         <div class="f1-step">
             <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-            <p>account</p>
+            <p>contact</p>
         </div>
         <div class="f1-step">
             <div class="f1-step-icon"><i class="fa fa-twitter"></i></div>
@@ -24,17 +24,40 @@
     
     <fieldset style="display: block;">
         <h4>Tell us who you are:</h4>
+        <div class="form-group col-md-6">
+            <label class="sr-only" for="f1-last-name">Title</label>
+            <select name="title" class="form-control">
+                <option value="">Title</option>
+                <option value="mr">Mr</option>
+                <option value="mrs">Mrs</option>
+                <option value="miss">Miss</option>
+                <option value="dr">Dr</option>
+                <option value="chief">Chief</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="sr-only" for="f1-last-name">Gender</label>
+            <select name="title" class="form-control">
+                <option value="gender">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
         <div class="form-group">
             <label class="sr-only" for="f1-first-name">First name</label>
-            <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control input-error" id="f1-first-name">
+            <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" id="f1-first-name">
         </div>
         <div class="form-group">
             <label class="sr-only" for="f1-last-name">Last name</label>
-            <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control input-error" id="f1-last-name">
+            <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control" id="f1-last-name">
         </div>
         <div class="form-group">
-            <label class="sr-only" for="f1-about-yourself">About yourself</label>
-            <textarea name="f1-about-yourself" placeholder="About yourself..." class="f1-about-yourself form-control input-error" id="f1-about-yourself"></textarea>
+            <label class="sr-only" for="f1-last-name">Email Address</label>
+            <input type="email" name="email" placeholder="Email Address..." class="form-control">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="f1-dob">Date of birth</label>
+            <input type="date" name="f1-dob" placeholder="Date of birth..." class="form-control">
         </div>
         <div class="f1-buttons">
             <button type="button" class="btn btn-next">Next</button>
@@ -124,7 +147,7 @@
         */
         $('.f1 fieldset:first').fadeIn('slow');
         
-        $('.f1 input[type="text"], .f1 input[type="password"], .f1 textarea').on('focus', function() {
+        $('.f1 input, .fi select, .f1 textarea').on('focus', function() {
             $(this).removeClass('input-error');
         });
         
@@ -137,7 +160,7 @@
             var progress_line = $(this).parents('.f1').find('.f1-progress-line');
             
             // fields validation
-            parent_fieldset.find('input[type="text"], input[type="password"], textarea').each(function() {
+            parent_fieldset.find('.f1 input, .fi select, .f1 textarea').each(function() {
                 if( $(this).val() == "" ) {
                     $(this).addClass('input-error');
                     next_step = false;
@@ -185,7 +208,7 @@
         $('.f1').on('submit', function(e) {
             
             // fields validation
-            $(this).find('input[type="text"], input[type="password"], textarea').each(function() {
+            $(this).find('.f1 input, .fi select, .f1 textarea').each(function() {
                 if( $(this).val() == "" ) {
                     e.preventDefault();
                     $(this).addClass('input-error');
@@ -195,7 +218,8 @@
                 }
             });
             // fields validation
-            
+            e.preventDefault();
+            console.log(this.UserGlobalVariables)
         });
         
         

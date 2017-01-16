@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FormsModule }   from '@angular/forms';
+
 import { ConversationService } from '../services/conversation.service';
 import { Conversation } from '../conversation';
 import { ButtonVariables } from '../buttonVariables';
@@ -21,9 +23,13 @@ export class ConversationComponent implements OnInit {
     ChangeVariables:any;
     SystemConversation : ButtonVariables;
     FormVariables : ButtonVariables;
-    UserGlobalVariables : {
-        firstname:"", lastname:"", Email:"", Phone:"", Address:""
+    DecideVariables : ButtonVariables;
+    UserGlobalVariables = {
+        firstname:"", lastname:"", Email:"", Phone:"", Address:"", preferredName : ""
     };
+    activeKey:string;
+    appState:string;
+    activeForm:string;
     //message : stringmessage;
      
     constructor(private _conversationService: ConversationService) {
@@ -61,8 +67,9 @@ export class ConversationComponent implements OnInit {
         var newMessage = { message : message, sender : "user", class:"cui__user", context: lastContext };
         
         if(this.FormVariables == true) {
-            $("#formHolders").addClass("hide").html("")
+            $("#formHolders").addClass("hide")
             this.FormVariables = false;
+            this.changeDisplayedForm("default", false);
             this.continueUserConversation("form action cancelled", lastContext);
         } 
 
@@ -82,6 +89,7 @@ export class ConversationComponent implements OnInit {
                 }
 
                 if(ui_type == "buttons") {
+                    this.TextVariables = false;
                     switch(action) {
                         case "fetch_account_types":
                             var account_types = this.fetchAccountTypes();
@@ -155,8 +163,8 @@ export class ConversationComponent implements OnInit {
         var lastContext = this.conversation[conversation_length - 1].context;
 
         if(action == "form") {
-            var host_url = "../app/partials/forms/";
-            this.load_static_page(host_url+message+"_form.html", lastContext);
+            this.TextVariables = false;
+            this.changeDisplayedForm(message, false);
         }
 
         if(action == "learn") {
@@ -179,17 +187,6 @@ export class ConversationComponent implements OnInit {
                 ]
             };
         }
-    }
-
-    load_static_page(static_url:string, context) {
-        //document.getElementById("formHolders").innerHTML='<object type="text/html" data="'+static_url+'" ></object>';
-        //this.updateConversationUi("../app/partials/extralearning/"+message+".png", "https://en.wikipedia.org/wiki/"+message, "image", lastContext)
-        this.FormVariables = true;
-        $("#formHolders").load(static_url, function (event) {
-            $(this).removeClass("hide")
-        });
-        $("#style-4").animate({ scrollTop: $('#style-4').prop("scrollHeight")}, 1000);
-        
     }
 
     continueWatsonConversation(message:string, context:any) {
@@ -216,8 +213,50 @@ export class ConversationComponent implements OnInit {
         this.conversation.push(curr_convo);
     }
 
+    changeDisplayedForm(form:string, key) {
+        this.FormVariables = true;
+        $("#formHolders").removeClass('hide');
+        if(key) {
+            this.activeKey = key;
+        }
+        this.activeForm = form;
+        $("#style-4").animate({ scrollTop: $('#style-4').prop("scrollHeight")}, 1000);
+    }
+
+    createNewBankAccount(account_type:string, firstname:any, lastname:any, phone:any, title:string, gender:string, email:any, dob, mailingaddress, city, country) {
+        //Run a save function to save use details
+        //update the global details
+        // UserGlobalVariables : {
+        //     firstname:"", lastname:"", Email:"", Phone:"", Address:""
+        // };
+        this.UserGlobalVariables.firstname = this.UserGlobalVariables.preferredName = firstname;
+        this.UserGlobalVariables.lastname = lastname;
+        this.UserGlobalVariables.Email = email;
+        this.UserGlobalVariables.Phone = phone;
+
+        var conversation_length = this.conversation.length;
+
+        if(this.conversation.length) {
+            var lastContext = this.conversation[conversation_length - 1].context;
+            this.changeDisplayedForm("default", false);
+            $("#formHolders").addClass("hide");
+
+            
+            this.continueWatsonConversation(account_type+" form successfully created. A representative of the bank will contact you shortly", lastContext);
+
+            if(firstname != "") {
+                this.continueWatsonConversation("By the way would you like me to call you "+firstname+" from now", lastContext);
+                this.TextVariables = this.ButtonVariables = this.FormVariables, this.ChangeVariables = false;
+
+                this.DecideVariables = {ButtonText: "", ButtonContext: "confirmFirstname", ButtonParams: [
+                                                                                            {text:"Yes you can call me "+firstname, decision:"Yes"},
+                                                                                            {text:"No that's not my preferred name", decision:"No"}]};
+            }            
+        }
+    }
+
     fetchAccountTypes() {
-        return {ButtonText: "Select and account type to continue.", ButtonParams: ["Savings", "Current"]};
+        return {ButtonText: "Select an account type to continue.", ButtonParams: ["Savings", "Current"]};
     }
 
     fetchBillTypes() {
@@ -256,5 +295,9 @@ export class ConversationComponent implements OnInit {
                 ]
             }
         } 
+    }
+
+    makeDecision(context:string, decision:string ) {
+        console.log(context);
     }
 }

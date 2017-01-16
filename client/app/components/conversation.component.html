@@ -17,9 +17,114 @@
                 </div>
             </div>
             <div id="formHolders" class="hide" style="background: #EFEFEF;padding:12px;">
-                <div class="formContainers" *ngIf="FormVariables">
+                <form *ngIf="activeForm == 'savings_account'" (submit)="createNewBankAccount('savings', firstname.value, lastname.value, phone.value, title.value, gender.value, emailAddress.value, dob.value, mailingAddress.value, city.value, country.value)"  class="f1">
+
+                    <p class="text-center">Creating a new savings account</p>
+                    <div class="f1-steps">
+                        <div class="f1-progress">
+                            <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+                        </div>
+                        <div class="f1-step active">
+                            <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                            <p>about</p>
+                        </div>
+                        <div class="f1-step">
+                            <div class="f1-step-icon"><i class="fa fa-key"></i></div>
+                            <p>contact</p>
+                        </div>
+                        <div class="f1-step">
+                            <div class="f1-step-icon"><i class="fa fa-twitter"></i></div>
+                            <p>social</p>
+                        </div>
+                    </div>
                     
-                </div>
+                    <fieldset style="display: block;">
+                        <h4>Tell us who you are:</h4>
+                        <div class="form-group col-md-6">
+                            <label class="sr-only" for="f1-last-name">Title</label>
+                            <select #title name="title" class="form-control">
+                                <option value="">Title</option>
+                                <option value="mr">Mr</option>
+                                <option value="mrs">Mrs</option>
+                                <option value="miss">Miss</option>
+                                <option value="dr">Dr</option>
+                                <option value="chief">Chief</option>
+                            </select>
+                        </div>
+                        <div #gender class="form-group col-md-6">
+                            <label class="sr-only" for="f1-last-name">Gender</label>
+                            <select name="title" class="form-control">
+                                <option value="gender">Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-first-name">First name</label>
+                            <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" #firstname>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Last name</label>
+                            <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control" #lastname>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Email Address</label>
+                            <input type="email" name="email" placeholder="Email Address..." class="form-control" #emailAddress>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Phone</label>
+                            <input type="text" name="f1-last-name" placeholder="Phone Number..." class="f1-last-name form-control" #phone>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-dob">Date of birth</label>
+                            <input type="date" name="f1-dob" placeholder="Date of birth..." class="form-control" #dob>
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-next">Next</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Set up your account:</h4>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-email">Mailing Address</label>
+                            <input type="text" name="f1-email" placeholder="Mailing Address..." class="form-control" #mailingAddress>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-password">City</label>
+                            <input type="text" name="" placeholder="City" class="f1-password form-control" #city>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-repeat-password">Country</label>
+                            <input type="text" name="" placeholder="Country..." class="f1-repeat-password form-control" #country>
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Previous</button>
+                            <button type="button" class="btn btn-next">Next</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Social media profiles:</h4>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-facebook">Facebook</label>
+                            <input type="text" name="f1-facebook" placeholder="Facebook..." #facebook class="f1-facebook form-control" id="f1-facebook">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-twitter">Twitter</label>
+                            <input type="text" name="f1-twitter" placeholder="Twitter..." #twitter class="f1-twitter form-control" id="f1-twitter">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-google-plus">Google plus</label>
+                            <input type="text" name="f1-google-plus" placeholder="Google plus..." #google class="f1-google-plus form-control" id="f1-google-plus">
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Previous</button>
+                            <!--<button type="" class="btn btn-submit">Submit</button>-->
+                            <input type="submit" class="btn btn-submit" value="submit" />
+                        </div>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
@@ -47,7 +152,17 @@
             <div *ngIf="ChangeVariables" class="text-center">
                 <button class="btn btn-primary btn-lg btn-choice" (click)="sendConversationMessage($event, 'I changed my mind, ill like to do something else')">I changed my mind, i'll like to do something else </button>
             </div>
+
+            <div *ngIf="DecideVariables" class="button-response text-center">
+                <p>{{ DecideVariables.ButtonText }}</p>
+                <span *ngFor="let button of DecideVariables.ButtonParams">
+                    <button class="btn btn-primary btn-lg btn-choice" (click)="makeDecision(DecideVariables.ButtonContext, button.decision)"> {{ button.text }} </button>
+                </span>
+            </div>
         </div>
+        
     </div>
 </div>
+
+<script src=""></script>
 

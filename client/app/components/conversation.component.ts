@@ -24,6 +24,7 @@ export class ConversationComponent implements OnInit {
     SystemConversation : ButtonVariables;
     FormVariables : ButtonVariables;
     DecideVariables : ButtonVariables;
+    SystemTextVariables : ButtonVariables;
     UserGlobalVariables = {
         firstname:"", lastname:"", Email:"", Phone:"", Address:"", preferredName : ""
     };
@@ -59,6 +60,8 @@ export class ConversationComponent implements OnInit {
         this.ButtonVariables = false;
         this.ChangeVariables = true;
         this.SystemConversation = false;
+        this.SystemTextVariables = false;
+        
        
         var conversation_length = this.conversation.length;
         var lastContext = this.conversation[conversation_length - 1].context;
@@ -106,6 +109,10 @@ export class ConversationComponent implements OnInit {
                             this.ButtonVariables = this.fetchMobileNetworks();
                         break;
 
+                        case "select_card_options":
+                            this.ButtonVariables = this.fetchCardTypes();
+                        break;
+
                         default:
                             this.ButtonVariables = ["yes", "No"];
                         break;
@@ -115,8 +122,11 @@ export class ConversationComponent implements OnInit {
                 if(ui_type == "form") {
                     switch(action) {
                         case "fetch_account_form":
-                            //this.continueWatsonConversation("what would you like me to help you with?", response.context);
                             this.fetchAccountForm(data.account_type);
+                        break;
+
+                        case "fetch_atm_card_form":
+
                         break;
                     }
                 }
@@ -189,16 +199,20 @@ export class ConversationComponent implements OnInit {
         }
     }
 
-    continueWatsonConversation(message:string, context:any) {
+    continueWatsonConversation(message:string, context:any, no_text_variables = false) {
         this.updateConversationUi("watson",message , "", context);
+        
         this.TextVariables = true;
-        this.ButtonVariables = this.fetchDefaultHelpButtons();
+        if(no_text_variables = true) {
+            this.TextVariables = false;
+        }
+        //this.ButtonVariables = this.fetchDefaultHelpButtons();
     }
 
     continueUserConversation(message:string, context:any) {
         this.updateConversationUi("user",message , "cui__user", context);
         this.TextVariables = true;
-        this.ButtonVariables = this.fetchDefaultHelpButtons();
+        //this.ButtonVariables = this.fetchDefaultHelpButtons();
     }
 
     updateConversationUi(sender:any, text:string, user_class:string, context:any) {  
@@ -241,12 +255,12 @@ export class ConversationComponent implements OnInit {
             this.changeDisplayedForm("default", false);
             $("#formHolders").addClass("hide");
 
-            
-            this.continueWatsonConversation(account_type+" form successfully created. A representative of the bank will contact you shortly", lastContext);
+            this.continueUserConversation("Successfully created savings account", lastContext);
+            this.continueWatsonConversation(account_type+" account process successfully initiated. A representative of the bank will contact you shortly", lastContext);
 
             if(firstname != "") {
-                this.continueWatsonConversation("By the way would you like me to call you "+firstname+" from now", lastContext);
-                this.TextVariables = this.ButtonVariables = this.FormVariables, this.ChangeVariables = false;
+                this.continueWatsonConversation("By the way would you like me to call you "+firstname+" from now?", lastContext, false);
+                this.TextVariables = this.ButtonVariables = this.FormVariables, this.ChangeVariables = this.SystemTextVariables = false;
 
                 this.DecideVariables = {ButtonText: "", ButtonContext: "confirmFirstname", ButtonParams: [
                                                                                             {text:"Yes you can call me "+firstname, decision:"Yes"},
@@ -297,7 +311,70 @@ export class ConversationComponent implements OnInit {
         } 
     }
 
-    makeDecision(context:string, decision:string ) {
-        console.log(context);
+    fetchRequestNewCard() {
+        return {ButtonText: "Just choose your network provider.", ButtonParams: ["Etisalat", "Airtel", "Mtn", "Globacom"]}
+    }
+
+    fetchCardTypes() {
+        return {ButtonText: "Select one of the atm card types below.", ButtonParams: ["Visa Card", "Master Card", "Verve Card"]}
+    }
+
+    sendSystemConversationMessage(message:string, context:any) {
+        var conversation_length = this.conversation.length;
+        var lastContext = this.conversation[conversation_length - 1].context;
+
+        this.SystemTextVariables = false;
+        switch(context) {
+            case "confirmFirstname":
+                this.continueUserConversation(message, lastContext);
+                this.UserGlobalVariables.preferredName = message;
+                message = '';
+                this.continueWatsonConversation("Okay, Jamen would remember your name next time", lastContext);
+                
+                //check if user has an atm card if not suggest new atm card
+                this.suggestNewAtmCard(lastContext);
+                break;
+        }
+    }
+
+    makeDecision(context:string, decision:string, text:string ) {
+        var conversation_length = this.conversation.length;
+        var lastContext = this.conversation[conversation_length - 1].context;
+
+        switch(context) {
+            case "confirmFirstname":
+                if(decision == "Yes") {
+                    this.continueUserConversation(text, lastContext);
+                    this.continueWatsonConversation("Perfect. I'll remember your name next time.", lastContext);  
+                    this.TextVariables = this.ButtonVariables = this.ChangeVariables = this.FormVariables = false;
+                    this.suggestNewAtmCard(lastContext);              
+                } else {
+                    this.TextVariables = this.ButtonVariables = this.ChangeVariables = this.FormVariables = this.DecideVariables = false;
+                    this.SystemTextVariables = { placeholder:"Enter your preferred name", context: context};
+
+                    this.continueUserConversation(text, lastContext);
+                    this.continueWatsonConversation("Alright, what would you like me to call you then?.", lastContext);
+                }
+                break;
+            
+            case "requestNewCard":
+                if(decision == "Yes") {
+                    this.continueUserConversation(text, lastContext);
+                    this.continueWatsonConversation("Could you please confirm why you are requesting a new card?.", lastContext);  
+                    this.TextVariables = this.ButtonVariables = this.ChangeVariables = this.FormVariables = this.DecideVariables = false ;
+                    this.ButtonVariables = {ButtonText: "", ButtonParams: ["I'm a new customer and i'll like to request a new bank card", "Something happened to my card and thus i'll be needing a new one"]};           
+                } else {
+
+                }
+                break;
+        }
+    }
+
+    suggestNewAtmCard(lastContext) {
+        this.continueWatsonConversation("So "+this.UserGlobalVariables.preferredName+", would you like to request a new atm card for your account?", lastContext);
+        this.DecideVariables = {ButtonText: "", ButtonContext: "requestNewCard", ButtonParams: [
+                                                                                            {text:"Yes please i'll like a new card", decision:"Yes"},
+                                                                                            {text:"No thanks i don't need a card for now", decision:"No"}]};;
+                  
     }
 }

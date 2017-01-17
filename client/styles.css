@@ -52,7 +52,8 @@ h1 {
     max-width: 70%;
     min-width: 44px;
     min-height: 12px;
-	font-weight: 600;
+	font-weight: 900;
+    letter-spacing: 0.3px;
 	display: block;
 	clear: both;
 	

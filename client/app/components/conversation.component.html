@@ -85,7 +85,7 @@
                     </fieldset>
 
                     <fieldset>
-                        <h4>Set up your account:</h4>
+                        <h4>Please share your contact details:</h4>
                         <div class="form-group">
                             <label class="sr-only" for="f1-email">Mailing Address</label>
                             <input type="text" name="f1-email" placeholder="Mailing Address..." class="form-control" #mailingAddress>
@@ -105,7 +105,7 @@
                     </fieldset>
 
                     <fieldset>
-                        <h4>Social media profiles:</h4>
+                        <h4>Yes we're social:</h4>
                         <div class="form-group">
                             <label class="sr-only" for="f1-facebook">Facebook</label>
                             <input type="text" name="f1-facebook" placeholder="Facebook..." #facebook class="f1-facebook form-control" id="f1-facebook">
@@ -152,13 +152,16 @@
             <div *ngIf="ChangeVariables" class="text-center">
                 <button class="btn btn-primary btn-lg btn-choice" (click)="sendConversationMessage($event, 'I changed my mind, ill like to do something else')">I changed my mind, i'll like to do something else </button>
             </div>
-
             <div *ngIf="DecideVariables" class="button-response text-center">
                 <p>{{ DecideVariables.ButtonText }}</p>
                 <span *ngFor="let button of DecideVariables.ButtonParams">
-                    <button class="btn btn-primary btn-lg btn-choice" (click)="makeDecision(DecideVariables.ButtonContext, button.decision)"> {{ button.text }} </button>
+                    <button class="btn btn-primary btn-lg btn-choice" (click)="makeDecision(DecideVariables.ButtonContext, button.decision, button.text)"> {{ button.text }} </button>
                 </span>
             </div>
+            <div *ngIf="SystemTextVariables" class="text-response" style="margin-bottom:5px;">
+                <input autofocus="true" placeholder="{{ SystemTextVariables.placeholder }}" class="form-input" type="text" #message (keyup.enter)="sendSystemConversationMessage(message.value, SystemTextVariables.context)" style="padding:5px 20px;border-radius:3px;width:100%;outline:none;border:none;border-bottom:solid 3px #008ABC"/>
+            </div>
+
         </div>
         
     </div>

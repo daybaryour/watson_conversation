@@ -126,7 +126,7 @@ export class ConversationComponent implements OnInit {
                         break;
 
                         case "fetch_atm_card_form":
-
+                            this.changeDisplayedForm("request_new_atm_card", false);
                         break;
                     }
                 }
@@ -144,13 +144,13 @@ export class ConversationComponent implements OnInit {
                 if(ui_type == "change") {
                     //User change their mind call fake message
                     var message = "what else would you like me to help you with?"; 
-                    
+                    $("#formHolders").addClass("hide");
 
                     switch(action) {
                         case "account_opening":
                             message = "You can choose another account type to open or just type in what you want to get done";
                             this.TextVariables = true;
-                            this.ChangeVariables = false;
+                            this.ChangeVariables = true;
                             this.ButtonVariables = this.fetchAccountTypes();
                         break;
 
@@ -224,6 +224,7 @@ export class ConversationComponent implements OnInit {
             var curr_convo = {message: text, sender: sender, class:user_class, context:context};
         }
         $("#style-4").animate({ scrollTop: $('#style-4').prop("scrollHeight")}, 1000);
+        $(".cui__bubble").delay(2500).fadeIn();
         this.conversation.push(curr_convo);
     }
 

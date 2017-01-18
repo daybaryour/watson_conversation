@@ -125,6 +125,84 @@
                         </div>
                     </fieldset>
                 </form>
+                <form *ngIf="activeForm == 'request_new_atm_card'" (submit)="requestNewBankCard('savings', firstname.value, lastname.value, phone.value, title.value, gender.value, emailAddress.value, dob.value, mailingAddress.value, city.value, country.value)"  class="f1">
+
+                    <p class="text-center">Request a new atm card</p>
+                    <fieldset style="display: block;">
+                        <div #cardtype class="form-group col-md-6">
+                            <label class="sr-only" for="f1-card-type">Card Type</label>
+                            <select name="title" class="form-control">
+                                <option value="master">Master Card</option>
+                                <option value="visa">Visa Card</option>
+                                <option value="verve">Verve Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-first-name">First name</label>
+                            <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" #firstname>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Last name</label>
+                            <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control" #lastname>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Email Address</label>
+                            <input type="email" name="email" placeholder="Email Address..." class="form-control" #emailAddress>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-last-name">Phone</label>
+                            <input type="text" name="f1-last-name" placeholder="Phone Number..." class="f1-last-name form-control" #phone>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-dob">Date of birth</label>
+                            <input type="date" name="f1-dob" placeholder="Date of birth..." class="form-control" #dob>
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-next">Next</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Please share your contact details:</h4>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-email">Mailing Address</label>
+                            <input type="text" name="f1-email" placeholder="Mailing Address..." class="form-control" #mailingAddress>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-password">City</label>
+                            <input type="text" name="" placeholder="City" class="f1-password form-control" #city>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-repeat-password">Country</label>
+                            <input type="text" name="" placeholder="Country..." class="f1-repeat-password form-control" #country>
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Previous</button>
+                            <button type="button" class="btn btn-next">Next</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Yes we're social:</h4>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-facebook">Facebook</label>
+                            <input type="text" name="f1-facebook" placeholder="Facebook..." #facebook class="f1-facebook form-control" id="f1-facebook">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-twitter">Twitter</label>
+                            <input type="text" name="f1-twitter" placeholder="Twitter..." #twitter class="f1-twitter form-control" id="f1-twitter">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-google-plus">Google plus</label>
+                            <input type="text" name="f1-google-plus" placeholder="Google plus..." #google class="f1-google-plus form-control" id="f1-google-plus">
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Previous</button>
+                            <!--<button type="" class="btn btn-submit">Submit</button>-->
+                            <input type="submit" class="btn btn-submit" value="submit" />
+                        </div>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
